@@ -1,0 +1,82 @@
+@media only screen and (max-width: 1200px) {
+
+[class*="col-"]{padding-top:15px;padding-bottom:15px;}
+.about-destination .tabbed-area {margin-top: 40px;}
+.about-info #accordion {margin-top: 60px;}
+.blog-share {float: left;margin-top: 40px;}
+.children li {margin-left: 20%;}
+.children > .children li {margin-left: 40%;}
+.parallax-one{padding: 75px 0;}
+.slider-home .flex-viewport {max-height: 460px;}
+.book-slider ul li{margin-right: 30px;}
+.main-footer {padding: 0px;}
+.book-slider input, .book-slider ul li.li-input{width: 165px;}
+
+
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+
+}
+
+@media only screen and (max-width: 991px) {
+.js .navigate{display:none;}
+.js .slicknav_menu{display:block;}
+.header .button-style-1{display: none;}
+.slider-home .flex-viewport {max-height: 560px;}
+.book-slider{height: auto;padding:0 20px !important;}
+.reserve-form-area li:last-child{margin-left: -20px;}
+}
+
+@media only screen and (max-width: 767px) {
+.logo{padding-left: 20px !important;}
+.breadcrumb h1 {line-height: 50px;}
+.bottom-book-slider, .slider-triangle-under, .slider-triangle, .pre-address-b p, .flex-direction-nav{display: none;}
+.book-slider{margin-top: 0px;height: 270px;margin-bottom: -20px !important;}
+.pre-header{padding-left: 20px !important;}
+.pre-footer{padding-left: 20px !important;}
+.pre-link-box{display: none;}
+.slider-home .flex-viewport {max-height: 400px;}
+.slider-bar,.slider-bar-under{font-size:12px;padding: 10px;}
+.slider-bar{height:auto;}
+.slider-bar-under{height: auto;}
+.parallax-one{height: auto;padding:50 0;}
+.flip-container{height:250px;}
+.newsletter-wrapper{padding-left: 15px;}
+.newsletter-wrapper h2{margin-left: 60px;}
+.newsletter-form input[type="submit"]{margin-left: 0;margin-top: 10px;}
+}
+
+
+/* Tablet Portrait size to Tablet Landscape (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+.slider-home .flex-viewport {max-height: 460px;}
+.newsletter-form  input {width: 250px;}
+.newsletter-form h2 {margin-bottom: 30px;}
+.big-error-number {font-size: 90px;}
+.error-page-container .button-style-1 {margin-top: 60px;}
+.children li {margin-left: 25%;}
+.children li:after {width: 20px;height: 40px;left: -60px;}
+.children > .children li {margin-left: 50%;}
+.children > .children li:after {width: 20px;height: 40px;left: -60px;}
+table tr.products-title h6 {font-size: 9px;}
+table tr .title-table h5 {font-size: 13px;}
+table td.table-products-image {display: none;}
+table td.products-image-table {display: none;}
+table td.table-products-name {width: 65%;}
+table td .button-style-1 {text-indent: 0 !important;}
+.mobile-visibility {display: none;}
+.tabbed-area h6 {font-size: 11px;}
+.quick-reservation-container {margin-top: 30px;}
+h1 {font-size: 18px;line-height: 28px;}
+
+}
