@@ -21,17 +21,19 @@ $app->get('/', function (Request $request, Response $response, $args) {
 $app->post('/send-email', function (Request $request, Response $response, $args) {
 
     $data = $request->getParsedBody();
+    $result = true;
+    $msg =  'Message sent!';
 
-    /*$mail = new PHPMailer;
-    $mail->SMTPDebug = 2;
+    $mail = new PHPMailer;
 
+    /*$mail->SMTPDebug = 2;
     $mail->isSMTP();
     $mail->Host = 'email-smtp.us-east-1.amazonaws.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'AKIAIRFALSLKJOFP45PQ';
     $mail->Password = 'AlIddGpZYemr73TzHPaVoInXJAt/IwyuFSCu0CiY1S9U';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 587;*/
 
     $mail->setFrom('soporte@nearbybooking.com', 'Julio Solis');
     $mail->addReplyTo('juliosolai@gmail.com', 'Julio Solis');
@@ -46,10 +48,9 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     } else {
         $result = true;
         $msg =  'Message sent!';
-    }*/
-    $result = true;
-    $msg =  'Message sent!';
-    $payload = json_encode(['success' => $result, 'msg' => $msg, 'post' => $post], JSON_PRETTY_PRINT);
+    }
+
+    $payload = json_encode(['success' => $result, 'msg' => $msg, 'post' => $data], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 
