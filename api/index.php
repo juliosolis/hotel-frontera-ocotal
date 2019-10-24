@@ -22,10 +22,15 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     $data = $request->getParsedBody();
     $mail = new PHPMailer;
 
-    $mensaje = 'De: ' . $data['nombre'] . "\n";
-    $mensaje .= 'Correo: ' . $data['email'] . "\n";
-    $mensaje .= 'Asunto: ' . $data['asunto'] . "\n";
-    $mensaje .= 'Mensaje: ' . $data['mensaje'] . "\n";
+    $html = '<h3>De: ' . $data['nombre'] . "</h3>";
+    $html .= '<h3>Correo: ' . $data['email'] . "</h3>";
+    $html .= '<h3>Asunto: ' . $data['asunto'] . "</h3>";
+    $html .= '<p>Mensaje: ' . $data['mensaje'] . "</p>";
+
+    $txt = 'De: ' . $data['nombre'] . "\n";
+    $txt .= 'Correo: ' . $data['email'] . "\n";
+    $txt .= 'Asunto: ' . $data['asunto'] . "\n";
+    $txt .= 'Mensaje: ' . $data['mensaje'] . "\n";
 
     $mail->setFrom('web@hotelfronteraocotal.com', 'Julio Solis');
     $mail->addReplyTo('hotelfronterasa@yahoo.com', 'Hotel Frontera');
@@ -34,7 +39,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     $mail->addBCC('js@juliosolis.com', 'Julio Solis L');
     $mail->Subject = 'Contacto Web: ' . $data['asunto'];
     $mail->msgHTML($mensaje);
-    $mail->AltBody = $mensaje;
+    $mail->AltBody = $txt;
 
     if (!$mail->send()) {
         $result = false;
