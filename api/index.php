@@ -38,7 +38,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     //$mail->addAddress('hotelfronterasa@yahoo.com', 'Hotel Frontera');
     $mail->addBCC('js@juliosolis.com', 'Julio Solis L');
     $mail->Subject = 'Contacto Web: ' . $data['asunto'];
-    $mail->msgHTML($mensaje);
+    $mail->msgHTML($html);
     $mail->AltBody = $txt;
 
     if (!$mail->send()) {
@@ -49,7 +49,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
         $msg =  'Message sent!';
     }
 
-    $payload = json_encode(['success' => $result, 'msg' => $msg, 'mensaje' => $mensaje], JSON_PRETTY_PRINT);
+    $payload = json_encode(['success' => $result, 'msg' => $msg, 'mensaje' => $htmls], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 
