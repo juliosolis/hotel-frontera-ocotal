@@ -32,7 +32,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     $mail->addAddress('js@juliosolis.com', 'Julio Solis');
     //$mail->addAddress('hotelfronterasa@yahoo.com', 'Hotel Frontera');
     $mail->addBCC('js@juliosolis.com', 'Julio Solis L');
-    $mail->Subject = 'Contacto Web: ' $data['asunto'];
+    $mail->Subject = 'Contacto Web: ' . $data['asunto'];
     $mail->msgHTML($mensaje);
     $mail->AltBody = $mensaje;
 
