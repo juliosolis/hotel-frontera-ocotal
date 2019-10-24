@@ -21,9 +21,6 @@ $app->get('/', function (Request $request, Response $response, $args) {
 $app->post('/send-email', function (Request $request, Response $response, $args) {
 
     $data = $request->getParsedBody();
-    $result = true;
-    $msg =  'Message sent!';
-
     $mail = new PHPMailer;
 
     /*$mail->SMTPDebug = 2;
