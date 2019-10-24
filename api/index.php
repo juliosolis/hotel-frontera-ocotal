@@ -49,7 +49,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
         $msg =  'Message sent!';
     }
 
-    $payload = json_encode(['success' => $result, 'msg' => $msg, 'mensaje' => $htmls], JSON_PRETTY_PRINT);
+    $payload = json_encode(['success' => $result, 'msg' => $msg, 'mensaje' => $html], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 
