@@ -14,8 +14,7 @@ $app = AppFactory::create();
 $app->setBasePath('/api');
 
 $app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Hello world!");
-    return $response;
+    return $response->withHeader('Location', 'http://hotel.fronteraocotal.com/')->withStatus(302);
 });
 
 $app->post('/send-email', function (Request $request, Response $response, $args) {
@@ -23,21 +22,19 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     $data = $request->getParsedBody();
     $mail = new PHPMailer;
 
-    /*$mail->SMTPDebug = 2;
-    $mail->isSMTP();
-    $mail->Host = 'email-smtp.us-east-1.amazonaws.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'AKIAIRFALSLKJOFP45PQ';
-    $mail->Password = 'AlIddGpZYemr73TzHPaVoInXJAt/IwyuFSCu0CiY1S9U';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;*/
+    $mensaje = 'De: ' . $data['nombre'] . "\n";
+    $mensaje .= 'Correo: ' . $data['email'] . "\n";
+    $mensaje .= 'Asunto: ' . $data['asunto'] . "\n";
+    $mensaje .= 'Mensaje: ' . $data['mensaje'] . "\n";
 
-    $mail->setFrom('soporte@nearbybooking.com', 'Julio Solis');
-    $mail->addReplyTo('juliosolai@gmail.com', 'Julio Solis');
-    $mail->addAddress('js@juliosolis.com', 'Cesar Lainez');
-    $mail->Subject = 'Formulario de Contacto del Sitio Web';
-    $mail->msgHTML($data['mensaje']);
-    $mail->AltBody = $data['mensaje'];
+    $mail->setFrom('web@hotelfronteraocotal.com', 'Julio Solis');
+    $mail->addReplyTo('hotelfronterasa@yahoo.com', 'Hotel Frontera');
+    $mail->addAddress('js@juliosolis.com', 'Julio Solis');
+    //$mail->addAddress('hotelfronterasa@yahoo.com', 'Hotel Frontera');
+    $mail->addBCC('js@juliosolis.com', 'Julio Solis L');
+    $mail->Subject = 'Contacto Web: ' $data['asunto'];
+    $mail->msgHTML($mensaje);
+    $mail->AltBody = $mensaje;
 
     if (!$mail->send()) {
         $result = false;
@@ -47,7 +44,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
         $msg =  'Message sent!';
     }
 
-    $payload = json_encode(['success' => $result, 'msg' => $msg, 'post' => $data], JSON_PRETTY_PRINT);
+    $payload = json_encode(['success' => $result, 'msg' => $msg, 'mensaje' => $mensaje], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 
