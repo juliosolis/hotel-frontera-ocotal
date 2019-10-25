@@ -47,6 +47,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
         if (!$recaptcha_result->success || empty($recaptcha_result->success)) {
             $msg = 'reCAPTCHA verification failed';
             $result = $recaptcha_result->success;
+            $html = '';
         } else {
             $mail = new PHPMailer;
 
