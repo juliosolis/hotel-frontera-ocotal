@@ -45,9 +45,9 @@ var BreadcrumbFullScreen = function(){
 /* Tabs */
 var Tabs = function(){
     $('.panel-style a').click(function(){
-        $('.panel-luxen').find('.panel-style').removeClass('active');    
-        $('.panel-luxen').removeClass('active-panel');    
-        $('.panel-luxen').find('.plus-box').html('<i class="fa fa-angle-down"></i>');     
+        $('.panel-luxen').find('.panel-style').removeClass('active');
+        $('.panel-luxen').removeClass('active-panel');
+        $('.panel-luxen').find('.plus-box').html('<i class="fa fa-angle-down"></i>');
         $(this).parent().parent().addClass('active');
         $(this).parent().parent().parent().addClass('active-panel');
         $(this).parent().find('.plus-box').html('<i class="fa fa-angle-up"></i>');
@@ -70,7 +70,7 @@ var luxenContactForm = function(){
     url: 'mail.php',
     data: $('#ajax-contact-form').serialize(),
     error:function(){ $('.contact-form').html("Error!"); }, //Hata veri
-    success: function(veri) { $('.contact-form').html(veri);} //Başarılı 
+    success: function(veri) { $('.contact-form').html(veri);} //Başarılı
     });
   });
   });
@@ -94,7 +94,7 @@ var AjaxReservation = function(){
                   url: 'reservation.php?reservationstep=two',
                   data: $('#ajax-reservation-send').serialize(),
                   error:function(){ $('.reserve-form-area').html("Error!"); },
-                  success: function(content) { $('.reserve-form-area').html(content);} 
+                  success: function(content) { $('.reserve-form-area').html(content);}
                 });
             });
           }
@@ -151,7 +151,7 @@ if(jQuery('#navigate').length){
 }
 
 /* Google Maps */
-if(jQuery('.maps').length){
+if(jQuery('.mapsas').length){
     var map;
     map = new GMaps({
     el: '#map',
@@ -203,7 +203,7 @@ if(jQuery('#weather').length){
 if(jQuery('#dpd1').length){
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-     
+
     var checkin = $('#dpd1').datepicker({
       onRender: function(date) {
         return date.valueOf() < now.valueOf() ? 'disabled' : '';
