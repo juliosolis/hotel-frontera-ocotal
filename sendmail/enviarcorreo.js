@@ -31,7 +31,6 @@ $(function() {
 			cache: false,
 			data: $this.serialize(),
 			success: function(data) {
-				console.log(data)
 				$this.children(".boton").removeAttr('disabled');
 				$this.children(".boton").val(texto_1);
 				if(data.success){
