@@ -50,17 +50,39 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     $mail->msgHTML($html);
     $mail->AltBody = $txt;
 
-    if (!$mail->send()) {
-        $result = false;
-        $msg = 'Mailer Error: '. $mail->ErrorInfo;
-    } else {
-        $result = true;
-        $msg =  'Message sent!';
-    }
+    $g_recaptcha_response = http_build_query([
+        'secret' => '6LfTIcUSAAAAANZ3Z1pCu6OOoHR8dXXH8wwMwsSy',
+        'response' => $data['g-recaptcha-response']
+    ]);
 
-    $payload = json_encode(['success' => $result, 'msg' => $msg, 'mensaje' => $html], JSON_PRETTY_PRINT);
-    $response->getBody()->write($payload);
-    return $response->withHeader('Content-Type', 'application/json');
+    $opts = [ 'http' => [
+        'method' => 'POST',
+        'header'  => 'Content-type: application/x-www-form-urlencoded',
+        'content' => $g_recaptcha_response
+    ]];
+    $context = stream_context_create($opts);
+
+    $recaptcha_response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+    $recaptcha_result = json_decode($recaptcha_response);
+
+    if (!$recaptcha_result->success || empty($recaptcha_result->success)){
+        $msg = 'reCAPTCHA verification failed';
+        $payload = json_encode(['success' => $recaptcha_result->success, 'msg' => $msg, 'mensaje' => $html], JSON_PRETTY_PRINT);
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }else{
+        if (!$mail->send()) {
+            $result = false;
+            $msg = 'Mailer Error: '. $mail->ErrorInfo;
+        } else {
+            $result = true;
+            $msg =  'Message sent!';
+        }
+
+        $payload = json_encode(['success' => $result, 'msg' => $msg, 'mensaje' => $html], JSON_PRETTY_PRINT);
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
 });
 
