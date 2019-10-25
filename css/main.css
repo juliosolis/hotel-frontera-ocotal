@@ -42,11 +42,11 @@
 
 @import url("slicknav.css");
 
-@import url(http://fonts.googleapis.com/css?family=Varela+Round);
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
 
-@import url(http://fonts.googleapis.com/css?family=Muli:300,400,300italic,400italic);
+@import url(https://fonts.googleapis.com/css?family=Muli:300,400,300italic,400italic);
 
-@import url(http://fonts.googleapis.com/css?family=Shadows+Into+Light);
+@import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light);
 
 body {
     margin: 0;
@@ -1196,8 +1196,8 @@ label {
     transform-style: preserve-3d;
     -ms-transform: perspective(1000px);
     -moz-transform: perspective(1000px);
-    -moz-transform-style: preserve-3d; 
-    -ms-transform-style: preserve-3d; 
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
 }
 
 .flip-container:hover .back {
@@ -1371,7 +1371,7 @@ ul.footer-links li i {
 .breadcrumb-1 {
     background: url(../temp/breadcrumb-1.jpg) no-repeat fixed;
     background-size: cover;
-  
+
 }
 
 .breadcrumb h1 {
