@@ -26,18 +26,19 @@ $(function() {
 
 		$.ajax({
 			type: "POST",
-			url: '../sendmail/enviarmensaje.php',
+			url: '/api/send-email',
 			dataType: 'json',
 			cache: false,
 			data: $this.serialize(),
 			success: function(data) {
+				console.log(data)
 				$this.children(".boton").removeAttr('disabled');
 				$this.children(".boton").val(texto_1);
-				if(data.info !== 'error'){
+				if(data.success){
 					$this.children(".reset").val('');
 					message.hide().removeClass('alert-success').removeClass('alert-danger').addClass('alert-success').html(data.msg).fadeIn('slow').delay(5000).fadeOut('slow');
 				} else {
-					message.hide().removeClass('alert-success').removeClass('alert-danger').addClass('alert-danger').html(data.msg).fadeIn('slow').delay(5000).fadeOut('slow');					
+					message.hide().removeClass('alert-success').removeClass('alert-danger').addClass('alert-danger').html(data.msg).fadeIn('slow').delay(5000).fadeOut('slow');
 				}
 			}
 		});

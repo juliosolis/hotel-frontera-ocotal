@@ -20,6 +20,15 @@ $app->get('/', function (Request $request, Response $response, $args) {
 $app->post('/send-email', function (Request $request, Response $response, $args) {
 
     $data = $request->getParsedBody();
+
+    if(
+        empty($data['nombre']) || empty($data['email']) ||
+        empty($data['asunto']) || empty($data['mensaje']) ) {
+        $result = false;
+        $msg = 'Por favor rellene todos los campos, son requeridos';
+        $html = '';
+    }
+
     $mail = new PHPMailer;
 
     $html = '<h3>De: ' . $data['nombre'] . "</h3>";
@@ -34,9 +43,9 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 
     $mail->setFrom('web@hotelfronteraocotal.com', 'Julio Solis');
     $mail->addReplyTo('hotelfronterasa@yahoo.com', 'Hotel Frontera');
-    $mail->addAddress('js@juliosolis.com', 'Julio Solis');
-    //$mail->addAddress('hotelfronterasa@yahoo.com', 'Hotel Frontera');
-    $mail->addBCC('js@juliosolis.com', 'Julio Solis L');
+    //$mail->addAddress('js@juliosolis.com', 'Julio Solis');
+    $mail->addAddress('hotelfronterasa@yahoo.com', 'Hotel Frontera');
+    $mail->addAddress('js@juliosolis.com', 'Julio Solis L');
     $mail->Subject = 'Contacto Web: ' . $data['asunto'];
     $mail->msgHTML($html);
     $mail->AltBody = $txt;
