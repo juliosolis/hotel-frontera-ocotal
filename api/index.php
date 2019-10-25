@@ -41,7 +41,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     $txt .= 'Asunto: ' . $data['asunto'] . "\n";
     $txt .= 'Mensaje: ' . $data['mensaje'] . "\n";
 
-    $mail->setFrom('web@hotelfronteraocotal.com', 'Julio Solis');
+    $mail->setFrom('web@hotelfronteraocotal.com', 'Hotel Frontera');
     $mail->addReplyTo('hotelfronterasa@yahoo.com', 'Hotel Frontera');
     //$mail->addAddress('js@juliosolis.com', 'Julio Solis');
     $mail->addAddress('hotelfronterasa@yahoo.com', 'Hotel Frontera');
