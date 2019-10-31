@@ -12,14 +12,15 @@ use PHPMailer\PHPMailer\Exception;
 require __DIR__ . '/../vendor/autoload.php';
 
 define('DEV', 'js@juliosolis.com');
-define('TABLE', 'hoteles_promociones');
+define('TABLA', 'hoteles_promociones');
 define('HOTELID', 74);
+
 function getConnection()
 {
     $dbhost = "localhost";
     $dbuser = 'root';//"forge";
     $dbpass = '';//"aNJ4RJXLYMItxxOOar3W";
-    $dbname = 'nearbybooking';//"nearbybooking";
+    $dbname = 'nearby';//"nearbybooking";
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
@@ -114,10 +115,6 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 
 /*
  *
- * Obtener todas
- * $stm = $pdo->query("SELECT * FROM hoteles_promociones WHERE hotel_id = 74");
- * $rows = $stm->fetchAll(PDO::FETCH_ASSOC);
- *
  * Obtener Una
  * $stm = $pdo->query("SELECT * FROM hoteles_promociones WHERE hotel_id = 74 and id = " . $id);
  * $row = $stm->fetch(PDO::FETCH_ASSOC);
@@ -132,6 +129,18 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
  * $rowid = $pdo->lastInsertId();
  *
  */
+
+$app->get('/promociones', function (Request $request, Response $response, $args) {
+
+    $db = getConnection();
+    $stm = $db->query('SELECT * FROM ' . TABLA . ' WHERE hotel_id = ' . HOTELID);
+    $promociones = $stm->fetchAll(PDO::FETCH_ASSOC);
+    $total = $stm->rowCount();
+
+    $payload = json_encode(['success' => true, 'msg' => 'db connected', 'total' => $total, 'promociones' => $promociones], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
+});
 
 $app->post('/guardar-promocion', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
