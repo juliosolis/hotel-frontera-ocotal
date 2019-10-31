@@ -160,7 +160,6 @@ $app->post('/guardar-promocion', function (Request $request, Response $response,
     $db->prepare($stm)->execute([HOTELID, $data['titulo'], $data['precio'], $data['descripcion']]);
     $rowid = $db->lastInsertId();
 
-
     $payload = json_encode(['success' => true, 'msg' => 'saving...',], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
@@ -173,18 +172,12 @@ $app->put('/editar-promocion/{id}', function (Request $request, Response $respon
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->delete('/eliminar-promocion/{id}', function (Request $request, Response $response, $args) {
+$app->delete('/promociones/{id}', function (Request $request, Response $response, $args) {
     $db = getConnection();
 
-    $data = $request->getParsedBody();
-    $success = false;
-    $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
-
-    $affected = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $data['id']);
-    if ($affected) {
-        $success = true;
-        $msg = 'Promoción Eliminada.';
-    }
+    $affected = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $args['id']);
+    $success = $affected ? true : false;
+    $msg = $affected ? 'Promoción eliminada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
 
     $payload = json_encode(['success' => $success, 'msg' => $msg,], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
