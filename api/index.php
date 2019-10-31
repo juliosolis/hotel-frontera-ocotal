@@ -12,6 +12,7 @@ use PHPMailer\PHPMailer\Exception;
 require __DIR__ . '/../vendor/autoload.php';
 
 define('TABLE', 'hoteles_promociones');
+define('HOTELID', 74);
 function getConnection()
 {
     $dbhost = "localhost";
@@ -110,6 +111,27 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 
 });
 
+/*
+ *
+ * Obtener todas
+ * $stm = $pdo->query("SELECT * FROM hoteles_promociones WHERE hotel_id = 74");
+ * $rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+ *
+ * Obtener Una
+ * $stm = $pdo->query("SELECT * FROM hoteles_promociones WHERE hotel_id = 74 and id = " . $id);
+ * $row = $stm->fetch(PDO::FETCH_ASSOC);
+ *
+ * Editar
+ * $sql = "UPDATE hoteles_promociones SET hotel_id = ?, name=?, surname=?, sex=? WHERE id=?";
+ * $stmt= $pdo->prepare($sql);
+ * $stmt->execute([HOTELID, $name, $surname, $sex, $id]);
+ *
+ * Insertar
+ * $stm = $pdo->exec("INSERT INTO hoteles_promociones(hotel_id, population) VALUES ('Iraq', 38274000)");
+ * $rowid = $pdo->lastInsertId();
+ *
+ */
+
 $app->post('/guardar-promocion', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
 
@@ -126,10 +148,10 @@ $app->put('/editar-promocion/{id}', function (Request $request, Response $respon
 });
 
 $app->delete('/eliminar-promocion/{id}', function (Request $request, Response $response, $args) {
-
-    $id = 0;
+    $data = $request->getParsedBody();
+    $id = $data['id'];
     $db = getConnection();
-    $nrows = $db->exec('DELETE FROM countries WHERE id = ' . $id);
+    $nrows = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $id);
 
     $payload = json_encode(['success' => true, 'msg' => 'deleting...',], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
