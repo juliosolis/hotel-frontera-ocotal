@@ -90,7 +90,7 @@
                 <div style="margin: 20px 0 20px 0" class="col-lg-12">
                     <div class="col-lg-4">
                         <button class="btn btn-primary btn-sm" href="#" data-toggle="modal"
-                                data-target="#addNewOffertModal">Add new
+                                data-target="#agregarPromocionModal">Agregar nueva promocion
                         </button>
                     </div>
                 </div>
@@ -110,9 +110,9 @@
                             <div style="margin: 10px 0 10px 0;">
                                 <a id="btnModalEditarPromocion" class="btn btn-primary btn-sm" href="#"
                                    data-toggle="modal" data-target="#editarPromocionModal">Edit</a>
-                                <a class="btn btn-danger btn-sm" id="btnDeletePromocion"
+                                <a class="btn btn-danger btn-sm" id="btnEliminarPromocion"
                                    onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
-                                    Delete
+                                    Eliminar
                                 </a>
                             </div>
                         </div>
@@ -132,9 +132,9 @@
                             <div style="margin: 10px 0 10px 0;">
                                 <a id="btnModalEditarPromocion" class="btn btn-primary btn-sm" href="#"
                                    data-toggle="modal" data-target="#editarPromocionModal">Edit</a>
-                                <a class="btn btn-danger btn-sm" id="btnDeletePromocion"
+                                <a class="btn btn-danger btn-sm" id="btnEliminarPromocion"
                                    onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
-                                    Delete
+                                    Eliminar
                                 </a>
                             </div>
                         </div>
@@ -154,10 +154,10 @@
                         <div>
                             <div style="margin: 10px 0 10px 0;">
                                 <a id="btnModalEditarPromocion" class="btn btn-primary btn-sm" href="#"
-                                   data-toggle="modal" data-target="#editarPromocionModal">Edit</a>
-                                <a class="btn btn-danger btn-sm" id="btnDeletePromocion"
+                                   data-toggle="modal" data-target="#editarPromocionModal">Editar</a>
+                                <a class="btn btn-danger btn-sm" id="btnEliminarPromocion"
                                    onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
-                                    Delete
+                                    Eliminar
                                 </a>
                             </div>
                         </div>
@@ -167,12 +167,12 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="addNewOffertModal" tabindex="-1" role="dialog" aria-labelledby="addNewOffertModal"
+    <div class="modal fade" id="agregarPromocionModal" tabindex="-1" role="dialog" aria-labelledby="agregarPromocionModal"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add new offert</h5>
+                    <h5 class="modal-title">Agregar nueva promocion</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -180,34 +180,34 @@
                 <div class="modal-body">
                     <form id="guardarPromocionForm" method="post">
                         <div class="form-group">
-                            <label class="form-check-label" for="">Titulo</label>
-                            <input type="text" name="titulo" class="form-control" required>
+                            <label class="form-check-label" for="titulo">Titulo</label>
+                            <input type="text" name="titulo" class="form-control" id="titulo" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-check-label" for="">Precio</label>
-                            <input type="text" name="precio" class="form-control" required>
+                            <label class="form-check-label" for="precio">Precio</label>
+                            <input type="text" name="precio" class="form-control" id="precio" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-check-label" for="">Descripción</label>
-                            <textarea type="text" name="descripcion" class="form-control" required></textarea>
+                            <label class="form-check-label" for="descripcion">Descripción</label>
+                            <textarea name="descripcion" class="form-control" id="descripcion" required></textarea>
                         </div>
                         <div class="alert" role="alert"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarPromocion">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarPromocion">Guardar Cambios</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="editarPromocionModal" tabindex="-1" role="dialog" aria-labelledby="editOffertModal"
+    <div class="modal fade" id="editarPromocionModal" tabindex="-1" role="dialog" aria-labelledby="editarPromocionModal"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit offert</h5>
+                    <h5 class="modal-title">Editar promocion</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -230,11 +230,12 @@
                             <label class="form-check-label">Imagen</label>
                             <input type="file" name="imagen">
                         </div>
+                        <div class="alert" role="alert"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnEditarPromocion">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnEditarPromocion">Guardar Cambios</button>
                 </div>
             </div>
         </div>
@@ -336,12 +337,23 @@
         $('#editarPromocionModal').on('show.bs.modal', function (event) {
             $.ajax({
                 type: "GET",
-                url: url + 2,
+                url: url + 8,
                 dataType: 'JSON',
                 success: function (data) {
                     $('#editarPromocionModal input#titulo').val(data.promocion.titulo);
                     $('#editarPromocionModal input#precio').val(data.promocion.precio);
                     $('#editarPromocionModal textarea#descripcion').val(data.promocion.descripcion);
+                }
+            })
+        });
+
+        $('#btnEditarPromocion').on('click', function () {
+            $.ajax({
+                type: "PUT",
+                url: url + 8,
+                dataType: 'JSON',
+                success: function (data) {
+                    $('form#editarPromocionForm').find('.alert').addClass('alert-success').removeClass('alert-danger').html(data.msg)
                 }
             })
         });
@@ -366,7 +378,7 @@
             });
         });
 
-        $('#btnDeletePromocion').on('click', function () {
+        $('#btnEliminarPromocion').on('click', function () {
             $.ajax({
                 type: "DELETE",
                 url: url + 1,

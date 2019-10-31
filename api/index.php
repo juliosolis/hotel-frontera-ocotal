@@ -179,7 +179,18 @@ $app->post('/promociones', function (Request $request, Response $response, $args
 
 $app->put('/promociones/{id}', function (Request $request, Response $response, $args) {
 
-    $payload = json_encode(['success' => true, 'msg' => 'editing...',], JSON_PRETTY_PRINT);
+    $data = $request->getParsedBody();
+    $db = getConnection();
+
+    $sql = 'UPDATE hoteles_promociones SET titulo = ?, precio = ?, descripcion = ? WHERE hotel_id = '. HOTELID.' and id = ' . $args['id'];
+    $db->prepare($sql)->execute([$data['titulo'], $data['precio'], $data['descripcion']]);
+    $rowid = $db->lastInsertId();
+
+    $success = $rowid ? true : false;
+    $msg = $rowid ? 'Promociòn editada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
+
+
+    $payload = json_encode(['success' => $success, 'msg' => $msg,], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
