@@ -187,7 +187,7 @@ $app->put('/promociones/{id}', function (Request $request, Response $response, $
 $app->delete('/promociones/{id}', function (Request $request, Response $response, $args) {
     $db = getConnection();
 
-    $affected = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $args['id']);
+    $affected = $db->exec('DELETE FROM hoteles_promociones WHERE hotel_id = 74 and id = ' . $args['id']);
     $success = $affected ? true : false;
     $msg = $affected ? 'Promoción eliminada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
 
@@ -196,7 +196,4 @@ $app->delete('/promociones/{id}', function (Request $request, Response $response
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->get('/promocion/{id}', function (Request $request, Response $response) {
-
-});
 $app->run();
