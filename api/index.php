@@ -156,12 +156,13 @@ $app->put('/editar-promocion/{id}', function (Request $request, Response $respon
 });
 
 $app->delete('/eliminar-promocion/{id}', function (Request $request, Response $response, $args) {
+    $db = getConnection();
+
     $data = $request->getParsedBody();
     $success = false;
     $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
-    $id = $data['id'];
-    $db = getConnection();
-    $affected = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $id);
+
+    $affected = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $data['id']);
     if ($affected) {
         $success = true;
         $msg = 'Promoción Eliminada.';
@@ -172,7 +173,7 @@ $app->delete('/eliminar-promocion/{id}', function (Request $request, Response $r
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->get('/promocion/{id}', function (Request $request, Response $response){
+$app->get('/promocion/{id}', function (Request $request, Response $response) {
 
 });
 $app->run();
