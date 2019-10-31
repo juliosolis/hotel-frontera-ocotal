@@ -11,11 +11,35 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+define('TABLE', 'hoteles_promociones');
+function getConnection()
+{
+    $dbhost = "localhost";
+    $dbuser = 'root';//"forge";
+    $dbpass = '';//"aNJ4RJXLYMItxxOOar3W";
+    $dbname = 'nearby';//"nearbybooking";
+    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+}
+
 $app = AppFactory::create();
 $app->setBasePath('/api');
 
 $app->get('/', function (Request $request, Response $response, $args) {
     return $response->withHeader('Location', 'http://hotel.fronteraocotal.com/')->withStatus(302);
+});
+
+$app->get('/db', function (Request $request, Response $response, $args) {
+
+    $db = getConnection();
+    $stm = $db->query("SELECT VERSION()");
+
+    $version = $stm->fetch();
+
+    $payload = json_encode(['success' => true, 'msg' => 'db connected', 'version' => $version], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
 });
 
 $app->post('/send-email', function (Request $request, Response $response, $args) {
@@ -86,7 +110,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 
 });
 
-$app->post('/guardar-promocion', function (Request $request, Response $response, $args){
+$app->post('/guardar-promocion', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
 
     $payload = json_encode(['success' => true, 'msg' => 'saving...',], JSON_PRETTY_PRINT);
@@ -94,14 +118,18 @@ $app->post('/guardar-promocion', function (Request $request, Response $response,
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->put('/editar-promocion/{id}', function (Request $request, Response $response, $args){
+$app->put('/editar-promocion/{id}', function (Request $request, Response $response, $args) {
 
     $payload = json_encode(['success' => true, 'msg' => 'editing...',], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->delete('/eliminar-promocion/{id}', function (Request $request, Response $response, $args){
+$app->delete('/eliminar-promocion/{id}', function (Request $request, Response $response, $args) {
+
+    $id = 0;
+    $db = getConnection();
+    $nrows = $db->exec('DELETE FROM countries WHERE id = ' . $id);
 
     $payload = json_encode(['success' => true, 'msg' => 'deleting...',], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
