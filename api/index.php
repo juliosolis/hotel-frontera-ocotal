@@ -11,6 +11,7 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+define('DEV', 'js@juliosolis.com');
 define('TABLE', 'hoteles_promociones');
 define('HOTELID', 74);
 function getConnection()
@@ -149,11 +150,17 @@ $app->put('/editar-promocion/{id}', function (Request $request, Response $respon
 
 $app->delete('/eliminar-promocion/{id}', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
+    $success = false;
+    $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
     $id = $data['id'];
     $db = getConnection();
-    $nrows = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $id);
+    $affected = $db->exec('DELETE FROM countries WHERE hotel_id = 74 and id = ' . $id);
+    if ($affected) {
+        $success = true;
+        $msg = 'Promoción Eliminada.';
+    }
 
-    $payload = json_encode(['success' => true, 'msg' => 'deleting...',], JSON_PRETTY_PRINT);
+    $payload = json_encode(['success' => $success, 'msg' => $msg,], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
