@@ -19,7 +19,7 @@ function getConnection()
     $dbhost = "localhost";
     $dbuser = 'root';//"forge";
     $dbpass = '';//"aNJ4RJXLYMItxxOOar3W";
-    $dbname = 'nearby';//"nearbybooking";
+    $dbname = 'nearbybooking';//"nearbybooking";
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
@@ -136,6 +136,13 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 $app->post('/guardar-promocion', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
 
+    $db = getConnection();
+
+    $stm = "INSERT INTO hoteles_promociones (hotel_id, titulo, precio, descripcion) VALUES (?,?,?,?)";
+    $db->prepare($stm)->execute([HOTELID, $data['titulo'], $data['precio'], $data['descripcion']]);
+    $rowid = $db->lastInsertId();
+
+
     $payload = json_encode(['success' => true, 'msg' => 'saving...',], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
@@ -165,4 +172,7 @@ $app->delete('/eliminar-promocion/{id}', function (Request $request, Response $r
     return $response->withHeader('Content-Type', 'application/json');
 });
 
+$app->get('/promocion/{id}', function (Request $request, Response $response){
+
+});
 $app->run();
