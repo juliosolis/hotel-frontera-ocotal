@@ -86,4 +86,26 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 
 });
 
+$app->post('/guardar-promocion', function (Request $request, Response $response, $args){
+    $data = $request->getParsedBody();
+
+    $payload = json_encode(['success' => true, 'msg' => 'saving...',], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->put('/editar-promocion/{id}', function (Request $request, Response $response, $args){
+
+    $payload = json_encode(['success' => true, 'msg' => 'editing...',], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->delete('/eliminar-promocion/{id}', function (Request $request, Response $response, $args){
+
+    $payload = json_encode(['success' => true, 'msg' => 'deleting...',], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
 $app->run();

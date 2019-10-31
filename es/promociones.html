@@ -106,8 +106,12 @@
                         </div>
                         <div>
                             <div style="margin: 10px 0 10px 0;">
-                                <a class="btn btn-primary btn-sm" href="#">Edit</a>
-                                <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                                <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#editOffertModal">Edit</a>
+                                <form id="eliminarPromocionForm" method="post">
+                                    <button class="btn btn-danger btn-sm" id="btnDeletePromocion" onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
+                                        Delete
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -124,8 +128,12 @@
                         </div>
                         <div>
                             <div style="margin: 10px 0 10px 0;">
-                                <a class="btn btn-primary btn-sm" href="#">Edit</a>
-                                <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                                <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#editOffertModal">Edit</a>
+                                <form id="eliminarPromocionForm" method="post">
+                                    <button class="btn btn-danger btn-sm" id="btnDeletePromocion" onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
+                                        Delete
+                                    </button>
+                                </form>
                             </div>
                         </div>
 
@@ -143,8 +151,12 @@
                         </div>
                         <div>
                             <div style="margin: 10px 0 10px 0;">
-                                <a class="btn btn-primary btn-sm" href="#">Edit</a>
-                                <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                                <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#editOffertModal">Edit</a>
+                                <form id="eliminarPromocionForm" method="post">
+                                    <button class="btn btn-danger btn-sm" id="btnDeletePromocion" onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
+                                        Delete
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -163,11 +175,65 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Adding new offert</p>
+                    <form id="guardarPromocionForm" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="form-check-label" for="">Titulo</label>
+                            <input type="text" name="titulo" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="">Precio</label>
+                            <input type="text" name="precio" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="">Descripción</label>
+                            <input type="text" name="descripcion" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label">Imagen</label>
+                            <input type="file" name="imagen">
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnEditBookRotation">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarPromocion">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editOffertModal" tabindex="-1" role="dialog" aria-labelledby="editOffertModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit offert</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editarPromocionForm" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="form-check-label" for="">Titulo</label>
+                            <input type="text" name="titulo" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="">Precio</label>
+                            <input type="text" name="precio" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="">Descripción</label>
+                            <input type="text" name="descripcion" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label">Imagen</label>
+                            <input type="file" name="imagen">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnEditarPromocion">Save changes</button>
                 </div>
             </div>
         </div>
@@ -261,6 +327,47 @@
     var s = d.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(t, s);
 })(document);</script>
+
+<script type="application/javascript">
+    $(function () {
+       $('#btnGuardarPromocion').on('click', function () {
+           $.ajax({
+               type: "POST",
+               url: '/api/guardar-promocion',
+               dataType: 'json',
+               cache: false,
+               data: $('form#guardarPromocionForm').serialize(),
+               success: function(data) {
+                   console.log('nice');
+               }
+           });
+       });
+        $('#btnEditarPromocion').on('click', function () {
+            $.ajax({
+                type: "PUT",
+                url: '/api/editar-promocion/1',
+                dataType: 'json',
+                cache: false,
+                data: $('form#editarPromocionForm').serialize(),
+                success: function (data) {
+                    console.log('nice');
+                }
+            })
+        });
+        $('#btnDeletePromocion').on('click', function () {
+            $.ajax({
+                type: "DELETE",
+                url: '/api/editar-promocion/1',
+                dataType: 'json',
+                cache: false,
+                data: $('form#deletePromocionForm').serialize(),
+                success: function (data) {
+                    console.log('nice');
+                }
+            })
+        });
+    });
+</script>
 
 </body>
 </html>
