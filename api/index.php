@@ -42,7 +42,7 @@ $app->get('/db', function (Request $request, Response $response, $args) {
 
     $payload = json_encode(['success' => true, 'msg' => 'db connected', 'version' => $version], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
-    return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
+    return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->post('/send-email', function (Request $request, Response $response, $args) {
@@ -135,7 +135,7 @@ $app->get('/promociones', function (Request $request, Response $response, $args)
 
     $payload = json_encode(['success' => true, 'msg' => 'db connected', 'total' => $total, 'promociones' => $promociones], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
-    return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
+    return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->get('/promociones/{id}', function (Request $request, Response $response, $args) {
@@ -148,7 +148,7 @@ $app->get('/promociones/{id}', function (Request $request, Response $response, $
 
     $payload = json_encode(['success' => $success, 'msg' => $msg, 'promocion' => $promocion], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
-    return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
+    return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->post('/promociones', function (Request $request, Response $response, $args) {
