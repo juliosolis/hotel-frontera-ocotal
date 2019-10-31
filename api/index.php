@@ -115,10 +115,6 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 
 /*
  *
- * Obtener Una
- * $stm = $pdo->query("SELECT * FROM hoteles_promociones WHERE hotel_id = 74 and id = " . $id);
- * $row = $stm->fetch(PDO::FETCH_ASSOC);
- *
  * Editar
  * $sql = "UPDATE hoteles_promociones SET hotel_id = ?, name=?, surname=?, sex=? WHERE id=?";
  * $stmt= $pdo->prepare($sql);
@@ -138,6 +134,19 @@ $app->get('/promociones', function (Request $request, Response $response, $args)
     $total = $stm->rowCount();
 
     $payload = json_encode(['success' => true, 'msg' => 'db connected', 'total' => $total, 'promociones' => $promociones], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
+});
+
+$app->get('/promociones/{id}', function (Request $request, Response $response, $args) {
+
+    $db = getConnection();
+    $stm = $db->query("SELECT * FROM hoteles_promociones WHERE hotel_id = 74 and id = " . $args['id']);
+    $promocion = $stm->fetch(PDO::FETCH_ASSOC);
+    $success = $promocion ? true : false;
+    $msg = $promocion ? 'Promoción existe.' : 'Promoción no existe.';
+
+    $payload = json_encode(['success' => $success, 'msg' => $msg, 'promocion' => $promocion], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
 });
