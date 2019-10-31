@@ -20,7 +20,7 @@ function getConnection()
     $dbhost = "localhost";
     $dbuser = 'root';//"forge";
     $dbpass = '';//"aNJ4RJXLYMItxxOOar3W";
-    $dbname = 'nearby';//"nearbybooking";
+    $dbname = 'nearbybooking';//"nearbybooking";
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
@@ -151,21 +151,33 @@ $app->get('/promociones/{id}', function (Request $request, Response $response, $
     return $response->withHeader('Content-Type', 'application/json')->withStatus(302);
 });
 
-$app->post('/guardar-promocion', function (Request $request, Response $response, $args) {
+$app->post('/promociones', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
-
     $db = getConnection();
 
-    $stm = "INSERT INTO hoteles_promociones (hotel_id, titulo, precio, descripcion) VALUES (?,?,?,?)";
-    $db->prepare($stm)->execute([HOTELID, $data['titulo'], $data['precio'], $data['descripcion']]);
-    $rowid = $db->lastInsertId();
+    if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])){
+        $success = false;
+        $msg = 'Por favor rellene todos los campos requeridos';
+    }else{
+        $success = false;
+        $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
 
-    $payload = json_encode(['success' => true, 'msg' => 'saving...',], JSON_PRETTY_PRINT);
+        $stm = "INSERT INTO hoteles_promociones (hotel_id, titulo, precio, descripcion, fecha_creacion) VALUES (?,?,?,?,?)";
+        $db->prepare($stm)->execute([HOTELID, $data['titulo'], $data['precio'], $data['descripcion'], date('Y-m-d H:i:s')]);
+        $rowid = $db->lastInsertId();
+
+        if ($rowid){
+            $success = true;
+            $msg = 'Promocion guardada exitosamente';
+        }
+    }
+
+    $payload = json_encode(['success' => $success, 'msg' => $msg,], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->put('/editar-promocion/{id}', function (Request $request, Response $response, $args) {
+$app->put('/promociones/{id}', function (Request $request, Response $response, $args) {
 
     $payload = json_encode(['success' => true, 'msg' => 'editing...',], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);

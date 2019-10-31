@@ -107,11 +107,9 @@
                         <div>
                             <div style="margin: 10px 0 10px 0;">
                                 <a class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#editOffertModal">Edit</a>
-                                <form id="eliminarPromocionForm" method="post">
-                                    <button class="btn btn-danger btn-sm" id="btnDeletePromocion" onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
+                                    <a class="btn btn-danger btn-sm" id="btnDeletePromocion" onclick="return confirm('¿Está seguro de querer eliminar esta promocion?')">
                                         Delete
-                                    </button>
-                                </form>
+                                    </a>
                             </div>
                         </div>
                     </div>
@@ -178,16 +176,17 @@
                     <form id="guardarPromocionForm" method="post">
                         <div class="form-group">
                             <label class="form-check-label" for="">Titulo</label>
-                            <input type="text" name="titulo" class="form-control">
+                            <input type="text" name="titulo" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label class="form-check-label" for="">Precio</label>
-                            <input type="text" name="precio" class="form-control">
+                            <input type="text" name="precio" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label class="form-check-label" for="">Descripción</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <textarea type="text" name="descripcion" class="form-control" required></textarea>
                         </div>
+                        <div class="alert" role="alert"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -326,22 +325,23 @@
 
 <script type="application/javascript">
     $(function () {
+        let url = '/api/promociones';
        $('#btnGuardarPromocion').on('click', function () {
            $.ajax({
                type: "POST",
-               url: '/api/guardar-promocion',
+               url: '/api/promociones',
                dataType: 'json',
                cache: false,
                data: $('form#guardarPromocionForm').serialize(),
                success: function(data) {
-                   console.log('nice');
+                   $('form#guardarPromocionForm').find('.alert').addClass('alert-success').removeClass('alert-danger').html(res.msg)
                }
            });
        });
         $('#btnEditarPromocion').on('click', function () {
             $.ajax({
                 type: "PUT",
-                url: '/api/editar-promocion/1',
+                url: url,
                 dataType: 'json',
                 cache: false,
                 data: $('form#editarPromocionForm').serialize(),
@@ -353,7 +353,7 @@
         $('#btnDeletePromocion').on('click', function () {
             $.ajax({
                 type: "DELETE",
-                url: '/api/editar-promocion/1',
+                url: url + 1,
                 dataType: 'json',
                 cache: false,
                 data: $('form#deletePromocionForm').serialize(),
