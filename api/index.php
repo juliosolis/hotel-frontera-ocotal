@@ -113,19 +113,6 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 
 });
 
-/*
- *
- * Editar
- * $sql = "UPDATE hoteles_promociones SET hotel_id = ?, name=?, surname=?, sex=? WHERE id=?";
- * $stmt= $pdo->prepare($sql);
- * $stmt->execute([HOTELID, $name, $surname, $sex, $id]);
- *
- * Insertar
- * $stm = $pdo->exec("INSERT INTO hoteles_promociones(hotel_id, population) VALUES ('Iraq', 38274000)");
- * $rowid = $pdo->lastInsertId();
- *
- */
-
 $app->get('/promociones', function (Request $request, Response $response, $args) {
 
     $db = getConnection();
@@ -141,8 +128,9 @@ $app->get('/promociones', function (Request $request, Response $response, $args)
 $app->get('/promociones/{id}', function (Request $request, Response $response, $args) {
 
     $db = getConnection();
-    $stm = $db->query("SELECT * FROM hoteles_promociones WHERE hotel_id = 74 and id = " . $args['id']);
+    $stm = $db->query('SELECT * FROM ' . TABLA . ' WHERE hotel_id = 74 and id = ' . $args['id']);
     $promocion = $stm->fetch(PDO::FETCH_ASSOC);
+    $promocion['precio'] = '$ ' . number_format($promocion['precio'], 2);
     $success = $promocion ? true : false;
     $msg = $promocion ? 'Promoción existe.' : 'Promoción no existe.';
 
@@ -162,7 +150,7 @@ $app->post('/promociones', function (Request $request, Response $response, $args
         $success = false;
         $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
 
-        $stm = "INSERT INTO hoteles_promociones (hotel_id, titulo, precio, descripcion, fecha_creacion) VALUES (?,?,?,?,?)";
+        $stm = 'INSERT INTO ' . TABLA . ' (hotel_id, titulo, precio, descripcion, fecha_creacion) VALUES (?,?,?,?,?)';
         $db->prepare($stm)->execute([HOTELID, $data['titulo'], $data['precio'], $data['descripcion'], date('Y-m-d H:i:s')]);
         $rowid = $db->lastInsertId();
 
@@ -172,25 +160,25 @@ $app->post('/promociones', function (Request $request, Response $response, $args
         }
     }
 
-    $payload = json_encode(['success' => $success, 'msg' => $msg,], JSON_PRETTY_PRINT);
+    $payload = json_encode(['success' => $success, 'msg' => $msg, 'rowid' => $rowid], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->put('/promociones/{id}', function (Request $request, Response $response, $args) {
-
     $data = $request->getParsedBody();
     $db = getConnection();
 
-    $sql = 'UPDATE hoteles_promociones SET titulo = ?, precio = ?, descripcion = ? WHERE hotel_id = '. HOTELID.' and id = ' . $args['id'];
-    $db->prepare($sql)->execute([$data['titulo'], $data['precio'], $data['descripcion']]);
-    $rowid = $db->lastInsertId();
+    $sql = 'UPDATE ' . TABLA . ' SET titulo = ?, precio = ?, descripcion = ? WHERE hotel_id = '. HOTELID.' and id = ' . $args['id'];
+    $res = true;// = $db->prepare($sql)->execute([$data['titulo'], $data['precio'], $data['descripcion']]);
 
-    $success = $rowid ? true : false;
-    $msg = $rowid ? 'Promociòn editada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
+    $success = $res ? true : false;
+    $msg = $res ? 'Promociòn editada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
 
-
-    $payload = json_encode(['success' => $success, 'msg' => $msg,], JSON_PRETTY_PRINT);
+    $payload = json_encode([
+        'success' => $success, 'msg' => $msg,
+        'data' => $data, 'args' => $args, 'sql' => $sql
+    ], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
@@ -198,7 +186,7 @@ $app->put('/promociones/{id}', function (Request $request, Response $response, $
 $app->delete('/promociones/{id}', function (Request $request, Response $response, $args) {
     $db = getConnection();
 
-    $affected = $db->exec('DELETE FROM hoteles_promociones WHERE hotel_id = 74 and id = ' . $args['id']);
+    $affected = $db->exec('DELETE FROM ' . TABLA . ' WHERE hotel_id = 74 and id = ' . $args['id']);
     $success = $affected ? true : false;
     $msg = $affected ? 'Promoción eliminada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
 
