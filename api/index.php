@@ -116,7 +116,7 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
 $app->get('/promociones', function (Request $request, Response $response, $args) {
 
     $db = getConnection();
-    $stm = $db->query('SELECT * FROM ' . TABLA . ' WHERE hotel_id = ' . HOTELID);
+    $stm = $db->query('SELECT * FROM ' . TABLA . ' WHERE hotel_id = ' . HOTELID . ' ORDER BY id DESC');
     $promociones = $stm->fetchAll(PDO::FETCH_ASSOC);
     $total = $stm->rowCount();
 
@@ -177,6 +177,7 @@ $app->put('/promociones/{id}', function (Request $request, Response $response, $
 
     $payload = json_encode([
         'success' => $success, 'msg' => $msg,
+        'body'=> $request->getBody(),
         'data' => $data, 'args' => $args, 'sql' => $sql
     ], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
