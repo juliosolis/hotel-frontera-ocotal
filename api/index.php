@@ -142,43 +142,62 @@ $app->get('/promociones/{id}', function (Request $request, Response $response, $
 $app->post('/promociones', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $db = getConnection();
+    $imagen_existe = !empty($_FILES['imagen']['name']);
 
-    if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])){
+    if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
         $msg = 'Por favor rellene todos los campos requeridos';
-    }else{
+    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
+        $success = false;
+        $msg = 'Solo se permiten imagenes con formato jpg';
+    } else {
         $success = false;
         $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
 
         $stm = 'INSERT INTO ' . TABLA . ' (hotel_id, titulo, precio, descripcion, fecha_creacion) VALUES (?,?,?,?,?)';
         $db->prepare($stm)->execute([HOTELID, $data['titulo'], $data['precio'], $data['descripcion'], date('Y-m-d H:i:s')]);
-        $rowid = $db->lastInsertId();
+        $rowID = $db->lastInsertId();
 
-        if ($rowid){
+        if ($rowID) {
+            if ($imagen_existe) {
+                $destino = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/';
+                list($name, $ext) = explode('.', $_FILES['imagen']['name']);
+
+                $filename = strval($rowID) . "." . $ext;
+                move_uploaded_file($_FILES['imagen']['tmp_name'], $destino . $filename);
+            }
             $success = true;
             $msg = 'Promocion guardada exitosamente';
         }
     }
 
-    $payload = json_encode(['success' => $success, 'msg' => $msg, 'rowid' => $rowid], JSON_PRETTY_PRINT);
+    $payload = json_encode(['success' => $success, 'msg' => $msg], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$app->put('/promociones/{id}', function (Request $request, Response $response, $args) {
+$app->post('/promociones/{id}', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $db = getConnection();
 
-    $sql = 'UPDATE ' . TABLA . ' SET titulo = ?, precio = ?, descripcion = ? WHERE hotel_id = '. HOTELID.' and id = ' . $args['id'];
-    $res = true;// = $db->prepare($sql)->execute([$data['titulo'], $data['precio'], $data['descripcion']]);
+    if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
+        $success = false;
+        $msg = 'Por favor rellene todos los campos requeridos';
+    } else {
+        $sql = 'UPDATE ' . TABLA . ' SET titulo = ?, precio = ?, descripcion = ? WHERE hotel_id = ' . HOTELID . ' and id = ' . $args['id'];
+        $precio = str_replace('$ ', '', $data['precio']);
+        $db->prepare($sql)->execute([$data['titulo'], $precio, $data['descripcion']]);
 
-    $success = $res ? true : false;
-    $msg = $res ? 'Promociòn editada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
+        if ($db) {
+            $success = true;
+            $msg = 'Promoción editada exitosamente';
+        }
+    }
 
     $payload = json_encode([
         'success' => $success, 'msg' => $msg,
-        'body'=> $request->getBody(),
-        'data' => $data, 'args' => $args, 'sql' => $sql
+        'body' => $request->getBody(),
+        'data' => $data, 'args' => $args
     ], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
