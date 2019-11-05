@@ -172,7 +172,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editarPromocionForm" method="post">
+                    <form id="editarPromocionForm" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label class="form-check-label" for="titulo">Titulo</label>
@@ -185,6 +185,10 @@
                         <div class="form-group">
                             <label class="form-check-label" for="descripcion">Descripción</label>
                             <textarea name="descripcion" class="form-control" id="editarDescripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="imagen">Imagen</label>
+                            <input type="file" name="imagen" id="editarImagen">
                         </div>
                         <div class="alert" role="alert"></div>
                     </form>
@@ -321,6 +325,7 @@
             $('#editarPromocionModal input#editarTitulo').val('');
             $('#editarPromocionModal input#editarPrecio').val('');
             $('#editarPromocionModal textarea#editarDescripcion').val('');
+            $('#editarPromocionModal textarea#editarImagen').val('');
             $('#editarPromocionModal input#id').val('');
         });
         $('#agregarPromocionModal').on('hide.bs.modal', function (event) {
@@ -333,12 +338,16 @@
 
         $('#btnEditarPromocion').on('click', function () {
             let promoId = $('#editarPromocionModal input#id').val();
+            let form = new FormData(document.getElementById("editarPromocionForm"));
+            form.append('imagen', $('input[name=imagen]')[0].files[0]);
             $.ajax({
                 type: 'POST',
                 url: url + '/' + promoId,
                 dataType: 'json',
                 cache: false,
-                data: $('form#editarPromocionForm').serialize(),
+                contentType: false,
+                processData: false,
+                data: form,
                 success: function (data) {
                     $('form#editarPromocionForm').find('.alert').html(data.msg)
                         .addClass('alert-success').removeClass('alert-danger')

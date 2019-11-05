@@ -179,16 +179,30 @@ $app->post('/promociones', function (Request $request, Response $response, $args
 $app->post('/promociones/{id}', function (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $db = getConnection();
+    $imagen_existe = !empty($_FILES['imagen']['name']);
 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
         $msg = 'Por favor rellene todos los campos requeridos';
+    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
+        $success = false;
+        $msg = 'Solo se permiten imagenes con formato jpg';
     } else {
+        $success = false;
+        $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
+
         $sql = 'UPDATE ' . TABLA . ' SET titulo = ?, precio = ?, descripcion = ? WHERE hotel_id = ' . HOTELID . ' and id = ' . $args['id'];
         $precio = str_replace('$ ', '', $data['precio']);
         $db->prepare($sql)->execute([$data['titulo'], $precio, $data['descripcion']]);
 
         if ($db) {
+            if ($imagen_existe) {
+                $destino = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/';
+                list($name, $ext) = explode('.', $_FILES['imagen']['name']);
+                $filename = strval($data['id']) . "." . $ext;
+
+                move_uploaded_file($_FILES['imagen']['tmp_name'], $destino . $filename);
+            }
             $success = true;
             $msg = 'Promoción editada exitosamente';
         }
