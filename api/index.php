@@ -11,11 +11,38 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+define('DEV', 'js@juliosolis.com');
+define('TABLA', 'hoteles_promociones');
+define('HOTELID', 74);
+
+function getConnection()
+{
+    $dbhost = "localhost";
+    $dbuser = 'root';//"forge";
+    $dbpass = '';//"aNJ4RJXLYMItxxOOar3W";
+    $dbname = 'nearbybooking';//"nearbybooking";
+    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+}
+
 $app = AppFactory::create();
 $app->setBasePath('/api');
 
 $app->get('/', function (Request $request, Response $response, $args) {
     return $response->withHeader('Location', 'http://hotel.fronteraocotal.com/')->withStatus(302);
+});
+
+$app->get('/db', function (Request $request, Response $response, $args) {
+
+    $db = getConnection();
+    $stm = $db->query("SELECT VERSION()");
+
+    $version = $stm->fetch();
+
+    $payload = json_encode(['success' => true, 'msg' => 'db connected', 'version' => $version], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->post('/send-email', function (Request $request, Response $response, $args) {
@@ -84,6 +111,122 @@ $app->post('/send-email', function (Request $request, Response $response, $args)
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 
+});
+
+$app->get('/promociones', function (Request $request, Response $response, $args) {
+
+    $db = getConnection();
+    $stm = $db->query('SELECT * FROM ' . TABLA . ' WHERE hotel_id = ' . HOTELID . ' ORDER BY id DESC');
+    $promociones = $stm->fetchAll(PDO::FETCH_ASSOC);
+    $total = $stm->rowCount();
+
+    $payload = json_encode(['success' => true, 'msg' => 'db connected', 'total' => $total, 'promociones' => $promociones], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->get('/promociones/{id}', function (Request $request, Response $response, $args) {
+
+    $db = getConnection();
+    $stm = $db->query('SELECT * FROM ' . TABLA . ' WHERE hotel_id = 74 and id = ' . $args['id']);
+    $promocion = $stm->fetch(PDO::FETCH_ASSOC);
+    $promocion['precio'] = '$ ' . number_format($promocion['precio'], 2);
+    $success = $promocion ? true : false;
+    $msg = $promocion ? 'Promoción existe.' : 'Promoción no existe.';
+
+    $payload = json_encode(['success' => $success, 'msg' => $msg, 'promocion' => $promocion], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->post('/promociones', function (Request $request, Response $response, $args) {
+    $data = $request->getParsedBody();
+    $db = getConnection();
+    $imagen_existe = !empty($_FILES['imagen']['name']);
+
+    if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
+        $success = false;
+        $msg = 'Por favor rellene todos los campos requeridos';
+    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
+        $success = false;
+        $msg = 'Solo se permiten imagenes con formato jpg';
+    } else {
+        $success = false;
+        $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
+
+        $stm = 'INSERT INTO ' . TABLA . ' (hotel_id, titulo, precio, descripcion, fecha_creacion) VALUES (?,?,?,?,?)';
+        $db->prepare($stm)->execute([HOTELID, $data['titulo'], $data['precio'], $data['descripcion'], date('Y-m-d H:i:s')]);
+        $rowID = $db->lastInsertId();
+
+        if ($rowID) {
+            if ($imagen_existe) {
+                $destino = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/';
+                list($name, $ext) = explode('.', $_FILES['imagen']['name']);
+
+                $filename = strval($rowID) . "." . $ext;
+                move_uploaded_file($_FILES['imagen']['tmp_name'], $destino . $filename);
+            }
+            $success = true;
+            $msg = 'Promocion guardada exitosamente';
+        }
+    }
+
+    $payload = json_encode(['success' => $success, 'msg' => $msg], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->post('/promociones/{id}', function (Request $request, Response $response, $args) {
+    $data = $request->getParsedBody();
+    $db = getConnection();
+    $imagen_existe = !empty($_FILES['imagen']['name']);
+
+    if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
+        $success = false;
+        $msg = 'Por favor rellene todos los campos requeridos';
+    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
+        $success = false;
+        $msg = 'Solo se permiten imagenes con formato jpg';
+    } else {
+        $success = false;
+        $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
+
+        $sql = 'UPDATE ' . TABLA . ' SET titulo = ?, precio = ?, descripcion = ? WHERE hotel_id = ' . HOTELID . ' and id = ' . $args['id'];
+        $precio = str_replace('$ ', '', $data['precio']);
+        $db->prepare($sql)->execute([$data['titulo'], $precio, $data['descripcion']]);
+
+        if ($db) {
+            if ($imagen_existe) {
+                $destino = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/';
+                list($name, $ext) = explode('.', $_FILES['imagen']['name']);
+                $filename = strval($data['id']) . "." . $ext;
+
+                move_uploaded_file($_FILES['imagen']['tmp_name'], $destino . $filename);
+            }
+            $success = true;
+            $msg = 'Promoción editada exitosamente';
+        }
+    }
+
+    $payload = json_encode([
+        'success' => $success, 'msg' => $msg,
+        'body' => $request->getBody(),
+        'data' => $data, 'args' => $args
+    ], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->delete('/promociones/{id}', function (Request $request, Response $response, $args) {
+    $db = getConnection();
+
+    $affected = $db->exec('DELETE FROM ' . TABLA . ' WHERE hotel_id = 74 and id = ' . $args['id']);
+    $success = $affected ? true : false;
+    $msg = $affected ? 'Promoción eliminada.' : 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
+
+    $payload = json_encode(['success' => $success, 'msg' => $msg,], JSON_PRETTY_PRINT);
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->run();

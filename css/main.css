@@ -1982,3 +1982,17 @@ ul.tabbed-area li.active a {
     list-style: disc;
     padding-left: 30px;
 }
+
+/*-----------------------------------------------------------------------------------*/
+/*  Modal
+/*-----------------------------------------------------------------------------------*/
+.modal-header .close {
+    margin-top: -23px;
+}
+
+.form-check-label{
+    color: black;
+    font-size: 15px;
+}
+
+
