@@ -106,10 +106,10 @@ $app->get('/promociones', function (Request $request, Response $response, $args)
     $promociones = $stm->fetchAll(PDO::FETCH_ASSOC);
     $total = $stm->rowCount();
 
-    foreach ($promociones as $ix => $promo){
+    foreach ($promociones as $ix => $promo) {
         $promociones[$ix]['img'] = '/img/logo@2x.png';
         $file = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/' . $promo['id'] . '.' . 'jpg';
-        if(file_exists($file)){
+        if (file_exists($file)) {
             $promociones[$ix]['img'] = "/img/promociones/" . $promo['id'] . "." . "jpg";
         }
     }
@@ -137,6 +137,7 @@ $app->post('/promociones', function (Request $request, Response $response, $args
     $data = $request->getParsedBody();
     $db = getConnection();
     $imagen_existe = !empty($_FILES['imagen']['name']);
+    list($width, $height) = getimagesize($_FILES['imagen']['tmp_name']);
 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
@@ -144,6 +145,9 @@ $app->post('/promociones', function (Request $request, Response $response, $args
     } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
         $success = false;
         $msg = 'Solo se permiten imagenes con formato jpg';
+    } elseif (($width < $height) == true) {
+        $success = false;
+        $msg = 'Solo se permiten imagenes horizontales';
     } else {
         $success = false;
         $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
@@ -174,6 +178,7 @@ $app->post('/promociones/{id}', function (Request $request, Response $response, 
     $data = $request->getParsedBody();
     $db = getConnection();
     $imagen_existe = !empty($_FILES['imagen']['name']);
+    list($width, $height) = getimagesize($_FILES['imagen']['tmp_name']);
 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
@@ -181,6 +186,9 @@ $app->post('/promociones/{id}', function (Request $request, Response $response, 
     } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
         $success = false;
         $msg = 'Solo se permiten imagenes con formato jpg';
+    } elseif (($width < $height) == true) {
+        $success = false;
+        $msg = 'Solo se permiten imagenes horizontales';
     } else {
         $success = false;
         $msg = 'Hubo un error, por favor comuniquese con el desarrollador ' . DEV;
