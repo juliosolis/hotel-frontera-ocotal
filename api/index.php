@@ -162,7 +162,7 @@ $app->post('/promociones', function (Request $request, Response $response, $args
                 move_uploaded_file($_FILES['imagen']['tmp_name'], $destino . $filename);
             }
             $success = true;
-            $msg = 'Promocion guardada exitosamente';
+            $msg = 'Promoción guardada exitosamente';
         }
     }
 
@@ -175,7 +175,7 @@ $app->post('/promociones/{id}', function (Request $request, Response $response, 
     $data = $request->getParsedBody();
     $db = getConnection();
     $imagen_existe = !empty($_FILES['imagen']['name']);
-    list($width, $height) = getimagesize($_FILES['imagen']['tmp_name']);
+    list($width, $height) = !empty($_FILES['imagen']['tmp_name']) ? getimagesize($_FILES['imagen']['tmp_name']) : '' ;
 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
