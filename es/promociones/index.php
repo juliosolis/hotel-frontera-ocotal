@@ -15,7 +15,11 @@ require '../../../settings.php';
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151434276-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
         gtag('js', new Date());
 
         gtag('config', 'UA-151434276-1');
@@ -347,6 +351,7 @@ require '../../../settings.php';
             $('#editarPromocionModal textarea#editarDescripcion').val('');
             $('#editarPromocionModal textarea#editarImagen').val('');
             $('#editarPromocionModal input#id').val('');
+            $('#editarPromocionModal .alert').removeClass('alert-danger').removeClass('alert-success').html('');
         });
         $('#agregarPromocionModal').on('hide.bs.modal', function (event) {
             $('#agregarPromocionModal input#titulo').val('');
@@ -354,6 +359,7 @@ require '../../../settings.php';
             $('#agregarPromocionModal textarea#descripcion').val('');
             $('#agregarPromocionModal input#imagen').val('');
             $('#agregarPromocionModal input#id').val('');
+            $('#agregarPromocionModal .alert').removeClass('alert-danger').removeClass('alert-success').html('');
         });
 
         $('#btnEditarPromocion').on('click', function () {
@@ -369,8 +375,8 @@ require '../../../settings.php';
                 processData: false,
                 data: form,
                 success: function (data) {
-                    $('form#editarPromocionForm').find('.alert').html(data.msg)
-                        .addClass('alert-success').removeClass('alert-danger')
+                    let className = data.success ? 'alert-success' : 'alert-danger';
+                    $('form#editarPromocionForm').find('.alert').addClass(className).html(data.msg);
                 }
             })
         });
@@ -387,8 +393,8 @@ require '../../../settings.php';
                 processData: false,
                 data: form,
                 success: function (data) {
-                    $('form#guardarPromocionForm').find('.alert').html(data.msg)
-                        .addClass('alert-success').removeClass('alert-danger');
+                    let className = data.success ? 'alert-success' : 'alert-danger';
+                    $('form#guardarPromocionForm').find('.alert').addClass(className).html(data.msg);
                 }
             });
         });

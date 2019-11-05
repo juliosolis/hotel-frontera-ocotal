@@ -175,7 +175,7 @@ $app->post('/promociones/{id}', function (Request $request, Response $response, 
     $data = $request->getParsedBody();
     $db = getConnection();
     $imagen_existe = !empty($_FILES['imagen']['name']);
-    list($width, $height) = !empty($_FILES['imagen']['tmp_name']) ? getimagesize($_FILES['imagen']['tmp_name']) : '' ;
+    list($width, $height) = !empty($_FILES['imagen']['tmp_name']) ? getimagesize($_FILES['imagen']['tmp_name']) : '';
 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
@@ -207,11 +207,7 @@ $app->post('/promociones/{id}', function (Request $request, Response $response, 
         }
     }
 
-    $payload = json_encode([
-        'success' => $success, 'msg' => $msg,
-        'body' => $request->getBody(),
-        'data' => $data, 'args' => $args
-    ], JSON_PRETTY_PRINT);
+    $payload = json_encode(['success' => $success, 'msg' => $msg], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
