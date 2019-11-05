@@ -137,7 +137,6 @@ $app->post('/promociones', function (Request $request, Response $response, $args
     $data = $request->getParsedBody();
     $db = getConnection();
     $imagen_existe = !empty($_FILES['imagen']['name']);
-    var_dump($_FILES['imagen']);
 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
