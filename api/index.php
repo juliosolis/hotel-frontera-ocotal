@@ -10,21 +10,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-define('DEV', 'js@juliosolis.com');
-define('TABLA', 'hoteles_promociones');
-define('HOTELID', 74);
-
-function getConnection()
-{
-    $dbhost = "localhost";
-    $dbuser = 'root';//"forge";
-    $dbpass = '';//"aNJ4RJXLYMItxxOOar3W";
-    $dbname = 'nearbybooking';//"nearbybooking";
-    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $dbh;
-}
+require '../../settings.php';
 
 $app = AppFactory::create();
 $app->setBasePath('/api');
@@ -120,6 +106,14 @@ $app->get('/promociones', function (Request $request, Response $response, $args)
     $promociones = $stm->fetchAll(PDO::FETCH_ASSOC);
     $total = $stm->rowCount();
 
+    foreach ($promociones as $ix => $promo){
+        $promociones[$ix]['img'] = '/img/logo@2x.png';
+        $file = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/' . $promo['id'] . '.' . 'jpg';
+        if(file_exists($file)){
+            $promociones[$ix]['img'] = "/img/promociones/" . $promo['id'] . "." . "jpg";
+        }
+    }
+
     $payload = json_encode(['success' => true, 'msg' => 'db connected', 'total' => $total, 'promociones' => $promociones], JSON_PRETTY_PRINT);
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
@@ -143,6 +137,7 @@ $app->post('/promociones', function (Request $request, Response $response, $args
     $data = $request->getParsedBody();
     $db = getConnection();
     $imagen_existe = !empty($_FILES['imagen']['name']);
+    var_dump($_FILES['imagen']);
 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
