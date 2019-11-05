@@ -1,3 +1,6 @@
+<?php
+require '../../../settings.php';
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -72,11 +75,11 @@
                         <div class="pull-left">
                             <nav class="nav">
                                 <ul id="navigate" class="sf-menu navigate">
-                                    <li><a href="index.html">INICIO</a></li>
-                                    <li><a href="el-hotel.html">EL HOTEL</a></li>
-                                    <li><a href="habitaciones.html">HABITACIONES</a></li>
-                                    <li class="active"><a href="promociones.html">PROMOCIONES</a></li>
-                                    <li><a href="contacto.html">CONTACTO</a></li>
+                                    <li><a href="/es/index.html">INICIO</a></li>
+                                    <li><a href="/es/el-hotel.html">EL HOTEL</a></li>
+                                    <li><a href="/es/habitaciones.html">HABITACIONES</a></li>
+                                    <li class="active"><a href="./promociones">PROMOCIONES</a></li>
+                                    <li><a href="/es/contacto.html">CONTACTO</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -96,41 +99,47 @@
     <div class="content">
         <div class="container">
             <div class="row">
-                <div style="margin: 20px 0 20px 0" class="col-lg-12">
-                    <div class="col-lg-4">
-                        <button class="btn btn-primary btn-sm" href="#" data-toggle="modal"
-                                data-target="#agregarPromocionModal">Agregar nueva promocion
-                        </button>
+                <?php if ($isAdmin) { ?>
+                    <div style="margin: 20px 0 20px 0" class="col-lg-12">
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary btn-sm" href="#" data-toggle="modal"
+                                    data-target="#agregarPromocionModal">Agregar nueva promocion
+                            </button>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
                 <div class="col-lg-12">
                     <div class="col-lg-4 hide" id="promocion">
                         <div>
                             <h4 class="titulo">This is the greatest offert ever</h4>
                             <div style="text-align: center">
-                                <img src="/img/logo@2x.png" alt="">
+                                <img style="max-width: 100% " src="/img/logo@2x.png" alt="">
                             </div>
                             <p class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda delectus
                                 deleniti earum esse illo maiores nesciunt quibusdam, reprehenderit sed sequi tempora
                                 tenetur vero voluptate? Dolores pariatur quas reiciendis veniam? Laborum.</p>
                             <h5 class="precio">$ 100 </h5>
                         </div>
-                        <div>
-                            <div style="margin: 10px 0 10px 0;">
-                                <a class="btnModalEditarPromocion btn btn-primary btn-sm" href="#"
-                                   data-toggle="modal" data-target="#editarPromocionModal" data-promocion="a">Editar</a>
-                                <a class="btn btn-danger btn-sm btnEliminarPromocion" data-promocion="b">
-                                    Eliminar
-                                </a>
+                        <?php if ($isAdmin) { ?>
+                            <div>
+                                <div style="margin: 10px 0 10px 0;">
+                                    <a class="btnModalEditarPromocion btn btn-primary btn-sm" href="#"
+                                       data-toggle="modal" data-target="#editarPromocionModal"
+                                       data-promocion="a">Editar</a>
+                                    <a class="btn btn-danger btn-sm btnEliminarPromocion" data-promocion="b">
+                                        Eliminar
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="agregarPromocionModal" tabindex="-1" role="dialog" aria-labelledby="agregarPromocionModal"
+    <div class="modal fade" id="agregarPromocionModal" tabindex="-1" role="dialog"
+         aria-labelledby="agregarPromocionModal"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -309,12 +318,14 @@
                 $promo.find('h4.titulo').text(promocion.titulo)
                 $promo.find('p.desc').text(promocion.descripcion);
                 $promo.find('h5.precio').text('$ ' + parseFloat(promocion.precio).toFixed(2));
+                $promo.find('img').attr('src', promocion.img);
                 $promo.find('.btnModalEditarPromocion').data('promocion', promocion.id)
                 $promo.find('.btnEliminarPromocion').data('promocion', promocion.id)
                 $promo.appendTo(container).removeClass('hide');
             }
         })
 
+        <?php if ($isAdmin) { ?>
         $('#editarPromocionModal').on('show.bs.modal', function (event) {
             let $invoker = $(event.relatedTarget), promoId = $invoker.data('promocion');
             $.ajax({
@@ -397,6 +408,7 @@
                 })
             }
         });
+        <?php } ?>
     });
 </script>
 
