@@ -78,7 +78,7 @@ require '../../../settings.php';
                                     <li><a href="/es/index.html">INICIO</a></li>
                                     <li><a href="/es/el-hotel.html">EL HOTEL</a></li>
                                     <li><a href="/es/habitaciones.html">HABITACIONES</a></li>
-                                    <li class="active"><a href="./promociones">PROMOCIONES</a></li>
+                                    <li class="active"><a href="./">PROMOCIONES</a></li>
                                     <li><a href="/es/contacto.html">CONTACTO</a></li>
                                 </ul>
                             </nav>
