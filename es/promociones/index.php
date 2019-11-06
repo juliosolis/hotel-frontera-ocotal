@@ -109,6 +109,8 @@ require '../../../settings.php';
                             <button class="btn btn-primary btn-sm" href="#" data-toggle="modal"
                                     data-target="#agregarPromocionModal">Agregar nueva promocion
                             </button>
+                            <a class="btn btn-info btn-sm" target="_blank" href="./">Vista previa
+                            </a>
                         </div>
                     </div>
                 <?php } ?>
