@@ -382,6 +382,9 @@ require '../../../settings.php';
                 success: function (data) {
                     let className = data.success ? 'alert-success' : 'alert-danger';
                     $('form#editarPromocionForm').find('.alert').addClass(className).html(data.msg);
+                    setTimeout(function () {
+                        location.reload()
+                    }, 2000);
                 }
             })
         });
@@ -400,6 +403,9 @@ require '../../../settings.php';
                 success: function (data) {
                     let className = data.success ? 'alert-success' : 'alert-danger';
                     $('form#guardarPromocionForm').find('.alert').addClass(className).html(data.msg);
+                    setTimeout(function () {
+                        location.reload()
+                    }, 2000);
                 }
             });
         });
@@ -414,7 +420,9 @@ require '../../../settings.php';
                     cache: false,
                     data: $('form#deletePromocionForm').serialize(),
                     success: function (data) {
-                        console.log(data.msg);
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1000);
                     }
                 })
             }
