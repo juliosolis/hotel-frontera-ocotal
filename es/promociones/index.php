@@ -36,6 +36,7 @@ require '../../../settings.php';
     <link rel="stylesheet" href="/css/prettyPhoto.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/2035.responsive.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
 
     <script src="/js/vendor/modernizr-2.8.3-respond-1.1.0.min.js"></script>
     <!-- Respond.js IE8 support of HTML5 elements and media queries -->
@@ -117,7 +118,7 @@ require '../../../settings.php';
                         <div>
                             <h4 class="titulo">This is the greatest offert ever</h4>
                             <div style="text-align: center">
-                                <img style="max-width: 100% " src="/img/logo@2x.png" alt="">
+                                <a class="imagen" href="#" data-lightbox="image-1"><img style="max-width: 100% " src="/img/logo@2x.png" alt=""></a>
                             </div>
                             <p class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda delectus
                                 deleniti earum esse illo maiores nesciunt quibusdam, reprehenderit sed sequi tempora
@@ -300,6 +301,7 @@ require '../../../settings.php';
 <script src="/js/main.js"></script>
 <script src="/sendmail/enviarcorreo.js"></script>
 <script src="//www.google.com/recaptcha/api.js" async defer></script>
+<script src="/js/lightbox.min.js"></script>
 
 <!-- nearbooking updated -->
 <script type="text/javascript">var __nby_opciones = __nby_opciones || {cuenta: 74, idioma: 'es', canal: 1};
@@ -322,6 +324,7 @@ require '../../../settings.php';
                 $promo.find('h4.titulo').text(promocion.titulo)
                 $promo.find('p.desc').text(promocion.descripcion);
                 $promo.find('h5.precio').text('$ ' + parseFloat(promocion.precio).toFixed(2));
+                $promo.find('a.imagen').attr('href', promocion.img);
                 $promo.find('img').attr('src', promocion.img);
                 $promo.find('.btnModalEditarPromocion').data('promocion', promocion.id)
                 $promo.find('.btnEliminarPromocion').data('promocion', promocion.id)
