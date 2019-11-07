@@ -105,9 +105,12 @@ $app->get('/promociones', function (Request $request, Response $response, $args)
 
     foreach ($promociones as $ix => $promo) {
         $promociones[$ix]['img'] = '/img/logo@2x.png';
-        $file = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/' . $promo['id'] . '.' . 'jpg';
-        if (file_exists($file)) {
+        $file = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/' . $promo['id'];
+
+        if (file_exists($file . '.' . 'jpg')) {
             $promociones[$ix]['img'] = "/img/promociones/" . $promo['id'] . "." . "jpg";
+        }elseif(file_exists($file . '.' . 'png')){
+            $promociones[$ix]['img'] = "/img/promociones/" . $promo['id'] . "." . "png";
         }
     }
 
@@ -139,9 +142,9 @@ $app->post('/promociones', function (Request $request, Response $response, $args
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
         $msg = 'Por favor rellene todos los campos requeridos';
-    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
+    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg', 'image/png'])) {
         $success = false;
-        $msg = 'Solo se permiten imagenes con formato jpg';
+        $msg = 'Solo se permiten imagenes con formato jpg y png';
     } elseif ($imagen_existe && ($width < $height) == true) {
         $success = false;
         $msg = 'Solo se permiten imagenes horizontales';
@@ -158,7 +161,7 @@ $app->post('/promociones', function (Request $request, Response $response, $args
                 $destino = $_SERVER['DOCUMENT_ROOT'] . '/img/promociones/';
                 list($name, $ext) = explode('.', $_FILES['imagen']['name']);
 
-                $filename = strval($rowID) . "." . $ext;
+                $filename = strval($rowID) . "." . strtolower($ext);
                 move_uploaded_file($_FILES['imagen']['tmp_name'], $destino . $filename);
             }
             $success = true;
@@ -180,9 +183,9 @@ $app->post('/promociones/{id}', function (Request $request, Response $response, 
     if (empty($data['titulo']) || empty($data['precio']) || empty($data['descripcion'])) {
         $success = false;
         $msg = 'Por favor rellene todos los campos requeridos';
-    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg'])) {
+    } elseif ($imagen_existe && !in_array($_FILES['imagen']['type'], ['image/jpeg', 'image/jpg', 'image/png'])) {
         $success = false;
-        $msg = 'Solo se permiten imagenes con formato jpg';
+        $msg = 'Solo se permiten imagenes con formato jpg y png';
     } elseif ($imagen_existe && ($width < $height) == true) {
         $success = false;
         $msg = 'Solo se permiten imagenes horizontales';
