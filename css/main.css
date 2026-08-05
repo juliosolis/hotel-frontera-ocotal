@@ -848,6 +848,24 @@ label {
     margin: 0 auto;
 }
 
+.about-title .home-title {
+    color: #000;
+    font-family: "Muli", Helvetica, Arial, sans-serif;
+    font-size: 26px;
+    font-weight: normal;
+    letter-spacing: 0.0825em;
+    line-height: 40px;
+    margin: 0;
+}
+
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+    outline: 3px solid #d7a13b;
+    outline-offset: 3px;
+}
+
 .title-style-1 hr {
     width: 23px;
     height: 1px;
@@ -1153,7 +1171,7 @@ label {
 }
 
 .parallax-one {
-    background: url('../temp/parallax.jpg');
+    background: url('../temp/parallax.webp');
     height: 380px;
     padding: 100px 0;
 }
@@ -1369,7 +1387,7 @@ ul.footer-links li i {
 
 
 .breadcrumb-1 {
-    background: url(../temp/breadcrumb-1.jpg) no-repeat fixed;
+    background: url(../temp/breadcrumb-1.webp) no-repeat fixed;
     background-size: cover;
 
 }
@@ -1615,7 +1633,7 @@ table tr.table-products-list {
 /*-----------------------------------------------------------------------------------*/
 
 .quick-reservation-container {
-    background: url(../temp/quick-reservation.jpg);
+    background: url(../temp/quick-reservation.webp);
     padding: 7px;
     margin-bottom: 60px;
 }
@@ -1945,7 +1963,7 @@ ul.tabbed-area li.active a {
 /*-----------------------------------------------------------------------------------*/
 
 #under-construction-page {
-    background: url(../temp/slider-2.jpg) !important;
+    background: url(../temp/slider-2.webp) !important;
     height: 100%;
 }
 

@@ -11,23 +11,10 @@ require '../../../settings.php';
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151434276-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
-        gtag('config', 'UA-151434276-1');
-    </script>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Promociones | Hotel Frontera en Ocotal Nicaragua</title>
-    <meta name="description" content="">
+<title>Promociones | Hotel Frontera en Ocotal Nicaragua</title>
+<meta name="description" content="Consulte las promociones vigentes de Hotel Frontera en Ocotal, Nueva Segovia.">
+<link rel="canonical" href="https://hotelfronteraocotal.com/es/promociones/">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <link rel="shortcut icon" href="//hotelfronteraocotal.com/es/img/favicon.ico"/>
     <!-- CSS FILES -->
@@ -36,20 +23,12 @@ require '../../../settings.php';
     <link rel="stylesheet" href="/css/prettyPhoto.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/2035.responsive.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3DQ871C28K"></script>
+    <script defer src="/js/site.js"></script>
     <link rel="stylesheet" href="/css/lightbox.css">
-
-    <script src="/js/vendor/modernizr-2.8.3-respond-1.1.0.min.js"></script>
-    <!-- Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="/js/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
-<!--[if lt IE 7]>
-<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to
-    improve your experience.</p>
-<![endif]-->
+
 <div id="wrapper">
     <div class="header"><!-- Header Section -->
         <div class="pre-header"><!-- Pre-header -->
@@ -90,7 +69,7 @@ require '../../../settings.php';
                         </div>
                         <div class="pull-right">
                             <div class="button-style-1 margint45">
-                                <a href="contacto.html#" class="nearby_rel"><i class="fa fa-calendar"></i>RESERVAR</a>
+                                <a href="/es/contacto.html" class="contact-link" data-track="contact_click"><i class="fa fa-envelope"></i>CONTÁCTANOS</a>
                             </div>
                         </div>
                     </div>
@@ -248,12 +227,11 @@ require '../../../settings.php';
                         <div class="col-lg-4 col-sm-4">
                             <h6>SÍGUENOS</h6>
                             <ul class="footer-links">
-                                <li><a target="_blank" href="https://www.facebook.com/HOFROSA">Facebook</a></li>
+                                <li><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/HOFROSA">Facebook</a></li>
                                 <li><a target="_blank"
                                        href="https://plus.google.com/111318740318485372398/about?gl=ni&hl=es-419">Google
                                         +</a></li>
-                                <li><a target="_blank"
-                                       href="http://www.tripadvisor.com.mx/Hotel_Review-g1720870-d1718890-Reviews-Hotel_Frontera-Ocotal_Nueva_Segovia_Department.html">Tripadvisor</a>
+                                <li><a target="_blank" rel="noopener noreferrer" href="https://www.tripadvisor.com.mx/Hotel_Review-g1720870-d1718890-Reviews-Hotel_Frontera-Ocotal_Nueva_Segovia_Department.html">Tripadvisor</a>
                                 </li>
                             </ul>
                             </ul>
@@ -266,7 +244,7 @@ require '../../../settings.php';
                                 <li><p><i class="fa fa-map-marker"></i>Contiguo a Gasolinera Ramos Km. 226 Carretera
                                         Panamericana Norte, Ocotal, Nueva Segovia.</p></li>
                                 <li><p><i class="fa fa-phone"></i> +505 2732-2668 / 2732-2669</p></li>
-                                <li><p><i class="fa fa-envelope"></i> <a href="mailto:hotelfronterasa@yahoo.com"></a>hotelfronterasa@yahoo.com
+                                <li><p><i class="fa fa-envelope"></i> <a href="mailto:hotelfronterasa@yahoo.com" data-track="email_click">hotelfronterasa@yahoo.com</a>
                                     </p></li>
                             </ul>
                         </div>
@@ -278,10 +256,7 @@ require '../../../settings.php';
             <div class="container">
                 <div class="row">
                     <div class="pull-left">
-                    <span class="copyright">© 2015 Hotel Frontera -
-                        <a href="https://rel.nearbybooking.com/" target="_blank" style="color: #000000">
-                            NEARBYBOOKING COMMUNITY</a>
-                    </span>
+                    <span class="copyright">© 2026 Hotel Frontera</span>
 
                     </div>
                 </div>
@@ -305,22 +280,15 @@ require '../../../settings.php';
 <script src="//www.google.com/recaptcha/api.js" async defer></script>
 <script src="/js/lightbox.min.js"></script>
 
-<!-- nearbooking updated -->
-<script type="text/javascript">var __nby_opciones = __nby_opciones || {cuenta: 74, idioma: 'es', canal: 1};
-    (function (d) {
-        var t = d.createElement('script');
-        t.type = 'text/javascript';
-        t.async = true;
-        t.src = 'https://rel.nearbybooking.com/cdn/widget.js';
-        var s = d.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(t, s);
-    })(document);</script>
-
 <script type="application/javascript">
     $(function () {
         const url = '/api/promociones';
+        const adminQuery = window.location.search;
+        const promotionUrl = function (id) {
+            return url + (id ? '/' + encodeURIComponent(id) : '') + adminQuery;
+        };
 
-        $.get(url, function (res) {
+        $.get(promotionUrl(), function (res) {
             for (promocion of res.promociones) {
                 let container = $('#promocion').parent(), $promo = $('#promocion').clone();
                 $promo.find('h4.titulo').text(promocion.titulo)
@@ -339,7 +307,7 @@ require '../../../settings.php';
             let $invoker = $(event.relatedTarget), promoId = $invoker.data('promocion');
             $.ajax({
                 type: 'GET',
-                url: url + '/' + promoId,
+                url: promotionUrl(promoId),
                 dataType: 'JSON',
                 success: function (data) {
                     $('#editarPromocionModal input#editarTitulo').val(data.promocion.titulo);
@@ -373,7 +341,7 @@ require '../../../settings.php';
             form.append('imagen', $('input[name=imagen]')[0].files[0]);
             $.ajax({
                 type: 'POST',
-                url: url + '/' + promoId,
+                url: promotionUrl(promoId),
                 dataType: 'json',
                 cache: false,
                 contentType: false,
@@ -394,7 +362,7 @@ require '../../../settings.php';
             form.append('imagen', $('input[name=imagen]')[0].files[0]);
             $.ajax({
                 type: 'POST',
-                url: url,
+                url: promotionUrl(),
                 dataType: 'json',
                 cache: false,
                 contentType: false,
@@ -415,7 +383,7 @@ require '../../../settings.php';
                 let promoId = $(this).data('promocion');
                 $.ajax({
                     type: 'DELETE',
-                    url: url + '/' + promoId,
+                url: promotionUrl(promoId),
                     dataType: 'json',
                     cache: false,
                     data: $('form#deletePromocionForm').serialize(),
