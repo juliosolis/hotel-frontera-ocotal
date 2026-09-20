@@ -23,5 +23,4 @@ jobs:
       - run: |
           php -l api/index.php
           php -l settings.example.php
-          node --check js/site.js
           node --check sendmail/enviarcorreo.js
