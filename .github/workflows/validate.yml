@@ -1,0 +1,27 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: |
+          php -l api/index.php
+          php -l settings.example.php
+          node --check js/site.js
+          node --check sendmail/enviarcorreo.js
