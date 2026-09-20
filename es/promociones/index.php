@@ -1,5 +1,5 @@
 <?php
-require '../../../settings.php';
+require __DIR__ . '/../../settings.php';
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>
@@ -45,8 +45,8 @@ require '../../../settings.php';
                     <div class="pull-right">
                         <div class="pull-left">
                             <ul class="pre-link-box">
-                                <li><a href="el-hotel.html">El hotel</a></li>
-                                <li><a href="contacto.html">Contacto</a></li>
+                                <li><a href="/es/el-hotel.html">El hotel</a></li>
+                                <li><a href="/es/contacto.html">Contacto</a></li>
                             </ul>
                         </div>
                     </div>
