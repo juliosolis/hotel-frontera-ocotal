@@ -23,8 +23,14 @@ require '../../../settings.php';
     <link rel="stylesheet" href="/css/prettyPhoto.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/2035.responsive.css">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3DQ871C28K"></script>
-    <script defer src="/js/site.js"></script>
+    <!-- Google Analytics (configuración existente) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151434276-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-151434276-1');
+    </script>
     <link rel="stylesheet" href="/css/lightbox.css">
 </head>
 <body>
@@ -69,7 +75,7 @@ require '../../../settings.php';
                         </div>
                         <div class="pull-right">
                             <div class="button-style-1 margint45">
-                                <a href="/es/contacto.html" class="contact-link" data-track="contact_click"><i class="fa fa-envelope"></i>CONTÁCTANOS</a>
+                                <a href="contacto.html#" class="nearby_rel"><i class="fa fa-calendar"></i>RESERVAR</a>
                             </div>
                         </div>
                     </div>
@@ -217,8 +223,8 @@ require '../../../settings.php';
                         <div class="col-lg-4 col-sm-4">
                             <h6>SOBRE NOSOTROS</h6>
                             <ul class="footer-links">
-                                <li><p>El Hotel Frontera ubicado em la ciudad de Ocotal contíguo al Estación Shell Ramos
-                                        del Departamento de Nueva Segovia.
+                                <li><p>El Hotel Frontera está ubicado en la ciudad de Ocotal, contiguo a Gasolinera Ramos,
+                                        en el departamento de Nueva Segovia.</p>
                                     <p></li>
                             </ul>
                         </div>
@@ -256,7 +262,9 @@ require '../../../settings.php';
             <div class="container">
                 <div class="row">
                     <div class="pull-left">
-                    <span class="copyright">© 2026 Hotel Frontera</span>
+                    <span class="copyright">© 2015 Hotel Frontera -
+                        <a href="https://rel.nearbybooking.com/" target="_blank" rel="noopener noreferrer" style="color: #000000">NEARBYBOOKING COMMUNITY</a>
+                    </span>
 
                     </div>
                 </div>
@@ -279,6 +287,16 @@ require '../../../settings.php';
 <script src="/sendmail/enviarcorreo.js"></script>
 <script src="//www.google.com/recaptcha/api.js" async defer></script>
 <script src="/js/lightbox.min.js"></script>
+<!-- NearbyBooking -->
+<script type="text/javascript">var __nby_opciones = __nby_opciones || {cuenta: 74, idioma: 'es', canal: 1};
+    (function (d) {
+        var t = d.createElement('script');
+        t.type = 'text/javascript';
+        t.async = true;
+        t.src = 'https://rel.nearbybooking.com/cdn/widget.js';
+        var s = d.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(t, s);
+    })(document);</script>
 
 <script type="application/javascript">
     $(function () {
