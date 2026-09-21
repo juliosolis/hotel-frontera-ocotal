@@ -16,7 +16,7 @@ require __DIR__ . '/../../settings.php';
 <meta name="description" content="Consulte las promociones vigentes de Hotel Frontera en Ocotal, Nueva Segovia.">
 <link rel="canonical" href="https://hotelfronteraocotal.com/es/promociones/">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <link rel="shortcut icon" href="//hotelfronteraocotal.com/es/img/favicon.ico"/>
+    <link rel="icon" type="image/png" href="/img/favicon.png">
     <!-- CSS FILES -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/flexslider.css">
