@@ -234,9 +234,6 @@ require __DIR__ . '/../../settings.php';
                             <h6>SÍGUENOS</h6>
                             <ul class="footer-links">
                                 <li><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/HOFROSA">Facebook</a></li>
-                                <li><a target="_blank"
-                                       href="https://plus.google.com/111318740318485372398/about?gl=ni&hl=es-419">Google
-                                        +</a></li>
                                 <li><a target="_blank" rel="noopener noreferrer" href="https://www.tripadvisor.com.mx/Hotel_Review-g1720870-d1718890-Reviews-Hotel_Frontera-Ocotal_Nueva_Segovia_Department.html">Tripadvisor</a>
                                 </li>
                             </ul>
